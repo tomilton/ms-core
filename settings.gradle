@@ -1,0 +1,3 @@
+rootProject.name = 'ms-core'
+
+include("ms-users")

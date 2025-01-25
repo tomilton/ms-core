@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.msanchez.springcloud.ms.core'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+apply plugin: 'base'
+
+tasks {
+    jar {
+        enabled = false
+    }
+}
+
+tasks.register("bootRunUsers") {
+    dependsOn(":ms-users:bootRun")
+}
