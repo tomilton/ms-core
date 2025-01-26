@@ -14,5 +14,17 @@ services:
     volumes:
       - db_data:/var/lib/mysql
 
+  postgres-db:
+    image: postgres:14
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: courses_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 volumes:
   db_data:
+  postgres_data:
