@@ -29,3 +29,7 @@ tasks {
 tasks.register("bootRunUsers") {
     dependsOn(":ms-users:bootRun")
 }
+
+tasks.register("bootRunCourses") {
+    dependsOn(":ms-courses:bootRun")
+}
