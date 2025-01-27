@@ -25,6 +25,9 @@ services:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./postgresql/config/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      - ./postgresql/config/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+    command: postgres -c config_file=/var/lib/postgresql/data/postgresql.conf
 volumes:
   db_data:
   postgres_data:
