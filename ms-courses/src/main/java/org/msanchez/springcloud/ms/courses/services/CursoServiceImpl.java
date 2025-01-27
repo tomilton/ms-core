@@ -79,11 +79,11 @@ public class CursoServiceImpl implements CursoService {
   @Override
   @Transactional
   public Optional<Usuario> asignarUsuario(Usuario usuario, Long cursoId) {
-    Optional<Curso> o = repository.findById(cursoId);
-    if (o.isPresent()) {
+    Optional<Curso> cursoDB = repository.findById(cursoId);
+    if (cursoDB.isPresent()) {
       Usuario usuarioMsvc = client.detalle(usuario.getId());
 
-      Curso curso = o.get();
+      Curso curso = cursoDB.get();
       CursoUsuario cursoUsuario = new CursoUsuario();
       cursoUsuario.setUsuarioId(usuarioMsvc.getId());
 
