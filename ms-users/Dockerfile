@@ -1,10 +1,11 @@
-FROM openjdk:23
+FROM openjdk:23-slim
 
 WORKDIR /app
 
-COPY ./build/libs/ms-users-0.0.1-SNAPSHOT.jar .
+COPY . .
+
+RUN ./gradlew clean build -x test
 
 EXPOSE 8001
 
-ENTRYPOINT ["java", "-jar", "ms-users-0.0.1-SNAPSHOT.jar"]
-
+ENTRYPOINT ["java","-jar","./build/libs/ms-users-0.0.1-SNAPSHOT.jar"]
