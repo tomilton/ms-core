@@ -10,7 +10,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     generate-ddl: true
 server:
-  port: 8001
+  port: ${PORT:8001}
 logging:
   level:
     org:

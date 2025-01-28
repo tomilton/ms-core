@@ -1,11 +1,11 @@
-FROM openjdk:23-slim
+FROM openjdk:23
 
 WORKDIR /app
 
-COPY . .
+COPY ./build/libs/ms-courses-0.0.1-SNAPSHOT.jar .
 
-RUN ./gradlew clean build -x test
+ENV PORT 8002
 
-EXPOSE 8002
+EXPOSE $PORT
 
-ENTRYPOINT ["java","-jar","./build/libs/ms-courses-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "ms-courses-0.0.1-SNAPSHOT.jar"]
