@@ -2,7 +2,7 @@ spring:
   application:
     name: ms-user
   datasource:
-    url: jdbc:mysql://host.docker.internal:3306/user_db?allowPublicKeyRetrieval=false
+    url: jdbc:mysql://mysql8:3306/user_db?allowPublicKeyRetrieval=false
     username: user
     password: user
     driver-class-name: com.mysql.cj.jdbc.Driver
