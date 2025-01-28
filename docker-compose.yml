@@ -31,6 +31,30 @@ services:
     command: postgres -c config_file=/var/lib/postgresql/data/postgresql.conf
     networks:
       - spring
+  ms-user:
+    container_name: ms-user
+    image: dockermsanchez/users:latest
+    ports:
+      - "8001:8001"
+    env_file: ./ms-users/.env
+    networks:
+      - spring
+    depends_on:
+      - mysql8
+    restart: always
+  ms-courses:
+      container_name: ms-courses
+      image: dockermsanchez/courses:latest
+      ports:
+        - "8002:8002"
+      env_file:
+        - ./ms-courses/.env
+      networks:
+        - spring
+      depends_on:
+        - postgres
+        - ms-user
+      restart: always
 volumes:
   db_data:
   postgres_data:
