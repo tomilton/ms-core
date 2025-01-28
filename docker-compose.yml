@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  db:
+  mysql8:
     image: mysql:8.0
-    container_name: mysql-db
+    container_name: mysql8
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: user_db
@@ -13,7 +13,8 @@ services:
       - '3306:3306'
     volumes:
       - db_data:/var/lib/mysql
-
+    networks:
+      - spring
   postgres-db:
     image: postgres:14
     container_name: postgres-db
@@ -28,6 +29,11 @@ services:
       - ./postgresql/config/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
       - ./postgresql/config/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
     command: postgres -c config_file=/var/lib/postgresql/data/postgresql.conf
+    networks:
+      - spring
 volumes:
   db_data:
   postgres_data:
+networks:
+  spring:
+    name: spring
