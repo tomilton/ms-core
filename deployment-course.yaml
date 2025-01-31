@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-courses
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-courses
+  template:
+    metadata:
+      labels:
+        app: ms-courses
+    spec:
+      containers:
+        - image: dockermsanchez/courses:latest
+          name: courses
+          ports:
+            - containerPort: 8002
+          env:
+            - name: PORT
+              value: "8002"
+            - name: DB_HOST
+              value: postgres:5432
+            - name: DB_DATABASE
+              value: courses_db
+            - name: DB_USERNAME
+              value: user
+            - name: DB_PASSWORD
+              value: user
+            - name: USER_URL
+              value: ms-user:8001/api/user
