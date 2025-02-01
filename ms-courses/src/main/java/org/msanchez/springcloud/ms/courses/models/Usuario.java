@@ -9,6 +9,8 @@ public class Usuario {
 
     private String password;
 
+    private int port;
+
     public Long getId() {
         return id;
     }
@@ -39,5 +41,13 @@ public class Usuario {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 }
