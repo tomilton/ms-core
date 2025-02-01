@@ -2,3 +2,4 @@ rootProject.name = 'ms-core'
 
 include("ms-users")
 include("ms-courses")
+include("eureka")
