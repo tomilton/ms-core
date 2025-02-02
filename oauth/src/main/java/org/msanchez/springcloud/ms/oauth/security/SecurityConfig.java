@@ -20,6 +20,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -52,9 +53,6 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 @Configuration
 public class SecurityConfig {
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
-
   @Bean
   @Order(1)
   SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http)
@@ -79,7 +77,11 @@ public class SecurityConfig {
                             new LoginUrlAuthenticationEntryPoint("/login"),
                             new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
                     )
-            );
+            )
+            //.cors(c->c.disable())
+            //.csrf(c->c.disable())
+            .oauth2ResourceServer((resourceServer) -> resourceServer
+                    .jwt(Customizer.withDefaults()));
 
     return http.build();
   }
@@ -94,6 +96,8 @@ public class SecurityConfig {
             )
             // Form login handles the redirect to the login page from the
             // authorization server filter chain
+            .csrf(AbstractHttpConfigurer::disable)
+            .cors(h->h.disable())
             .formLogin(Customizer.withDefaults());
 
     return http.build();
@@ -119,8 +123,8 @@ public class SecurityConfig {
   RegisteredClientRepository registeredClientRepository() {
     RegisteredClient oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
             .clientId("gateway-app")
-            .clientSecret(passwordEncoder.encode("12345"))
-            // .clientSecret("{noop}12345")
+            //.clientSecret("12345")
+            .clientSecret("{noop}12345")
             .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
@@ -128,7 +132,6 @@ public class SecurityConfig {
             .redirectUri("http://127.0.0.1:8090/authorized")
             .postLogoutRedirectUri("http://127.0.0.1:8090/logout")
             .scope(OidcScopes.OPENID)
-
             .scope(OidcScopes.PROFILE)
             .clientSettings(ClientSettings.builder().requireAuthorizationConsent(false).build())
             .build();
@@ -168,21 +171,6 @@ public class SecurityConfig {
   @Bean
   AuthorizationServerSettings authorizationServerSettings() {
     return AuthorizationServerSettings.builder().build();
-  }
-
-  @Bean
-  OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
-    return context -> {
-      if (context.getTokenType().getValue() == OAuth2TokenType.ACCESS_TOKEN.getValue()) {
-        Authentication principal = context.getPrincipal();
-        context.getClaims()
-                .claim("data", "data adicional en el token")
-                .claim("roles", principal.getAuthorities()
-                        .stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .collect(Collectors.toList()));
-      }
-    };
   }
 
 }
