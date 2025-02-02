@@ -2,6 +2,12 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: oauth
+          uri: lb://oauth
+          predicates:
+            - Path=/api/security/**
+          filters:
+            - StripPrefix=2
         - id: ms-user
           uri: lb://ms-user
           predicates:
