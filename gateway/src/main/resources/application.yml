@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: ms-user
+          uri: lb://ms-user
+          predicates:
+            - Path=/api/user/**
+          filters:
+            - RewritePath=/api/user/(?<segment>.*), /$\{segment}
+        - id: ms-courses
+          uri: lb://ms-courses
+          predicates:
+            - Path=/api/courses/**
+          filters:
+            - StripPrefix=2
