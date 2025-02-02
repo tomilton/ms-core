@@ -3,6 +3,8 @@ package org.msanchez.springcloud.ms.users.controllers;
 import lombok.AllArgsConstructor;
 import org.msanchez.springcloud.ms.users.model.entity.User;
 import org.msanchez.springcloud.ms.users.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -22,13 +24,16 @@ public class UserController {
     private UserService userService;
     private ApplicationContext context;
 
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @GetMapping("/crash")
     public void crash() {
         ((ConfigurableApplicationContext) context).close();
     }
 
     @GetMapping
-    public Map<String, List<User>> findAll() {
+    public Map<String, List<User>> findAll(@RequestHeader(value = "X-Token", defaultValue = "nada") String customHeader) {
+        logger.info("header del gateway: {}", customHeader);
         return Collections.singletonMap("users", userService.findAll());
     }
 
