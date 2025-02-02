@@ -1,4 +1,4 @@
-package org.msanchez.springcloud.ms.oauth.oauth;
+package org.msanchez.springcloud.ms.oauth;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
