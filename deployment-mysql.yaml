@@ -26,3 +26,11 @@ spec:
               value: user
             - name: MYSQL_PASSWORD
               value: user
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: data-mysql
+      volumes:
+        - name:  data-mysql
+          hostPath:
+            path: /var/lib/mysql
+            type: DirectoryOrCreate
