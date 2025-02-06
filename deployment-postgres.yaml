@@ -24,3 +24,11 @@ spec:
               name: POSTGRES_USER
             - value: courses_db
               name: POSTGRES_DB
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: data-postgres
+      volumes:
+        - name: data-postgres
+          hostPath:
+            path: /var/lib/postgresql/data
+            type: DirectoryOrCreate
